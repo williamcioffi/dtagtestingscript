@@ -20,7 +20,7 @@ x = d3readswv(recdir, prefix, 10);
 [CAL, D] = d3deployment(recdir, prefix, prefix);
 
 %the tag tools document is wrong about this you must enter 
-%the filename of the cal xml file
+%the id that is in the cal xml file not from 'D' above
 %also this file must be in the path. caldir only specifies the output dir
 %not the dir that tagtools looks for the cal file in.
 CAL = d3findcal(''); 
