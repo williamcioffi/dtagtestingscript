@@ -1,6 +1,6 @@
 %set up
 
-recdir = '2';
+recdir = 'data3';
 prefix = '';
 caldir = recdir;
 
@@ -8,22 +8,20 @@ caldir = recdir;
 settagpath('cal', recdir, 'prh', recdir);
 
 %10 is the decimation factor for the non hydrophone sensors
-x = d3readswv(recdir, prefix, 10);
+x = d3readswv(recdir, prefix, 1);
 
 %20 channels of sensors
-%what are they? use d3channames but there are too many. figure this out
-%later
+%[ch_names,descr,ch_nums,cal] = d3channames(x.cn) to see
+% look at cal
 
 %third parameter is actually deployname which could be just part of a more
 %complicated folder structure.
 
 [CAL, D] = d3deployment(recdir, prefix, prefix);
 
-%the tag tools document is wrong about this you must enter 
-%the id that is in the cal xml file not from 'D' above
-%also this file must be in the path. caldir only specifies the output dir
+%this file must be in the path. caldir only specifies the output dir
 %not the dir that tagtools looks for the cal file in.
-CAL = d3findcal(''); 
+CAL = d3findcal('dx328'); 
 
 %optimize the pressure
 %select points on the temp pressure graph that are likely to be surfacings
