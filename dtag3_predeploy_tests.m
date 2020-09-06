@@ -1,6 +1,6 @@
 %set up
 
-recdir = 'data3';
+recdir = '327test';
 prefix = '';
 caldir = recdir;
 
@@ -8,7 +8,7 @@ caldir = recdir;
 settagpath('cal', recdir, 'prh', recdir);
 
 %10 is the decimation factor for the non hydrophone sensors
-x = d3readswv(recdir, prefix, 1);
+x = d3readswv(recdir, prefix, 25);
 
 %20 channels of sensors
 %[ch_names,descr,ch_nums,cal] = d3channames(x.cn) to see
@@ -21,7 +21,7 @@ x = d3readswv(recdir, prefix, 1);
 
 %this file must be in the path. caldir only specifies the output dir
 %not the dir that tagtools looks for the cal file in.
-CAL = d3findcal('dx328'); 
+CAL = d3findcal('dx327'); 
 
 %optimize the pressure
 %select points on the temp pressure graph that are likely to be surfacings
@@ -35,22 +35,41 @@ CAL = d3findcal('dx328');
 %again you can set a min depth
 [M, CAL] = d3calmag(x, CAL, 'full');
 
+tiledlayout(2, 1)
+ax1 = nexttile;
+plot(A)
+ax2 = nexttile;
+plot(M)
+
+linkaxes([ax1 ax2], 'x')
+
+
 %cheating we are skipping the frame shift so we can just look at the
 %sensors
 Aw = A;
 Mw = M;
 
 [pitch roll] = a2pr(Aw);
-[head,mm,incl] = m2h(Mw,pitch,roll);
+[head,mm,incl] = m2h(Mw,pitch, roll);
 
+tiledlayout(4, 1);
+ax1 = nexttile;
+plot(-p)
 
-figure;
-subplot 311;
-plot(head(1:2000))
+ax2 = nexttile;
+plot(head, '.');
 ylabel('head');
-subplot 312;
-plot(pitch(1:2000));
+ylim([-4 4]);
+
+ax3 = nexttile;
+plot(pitch, '.');
 ylabel('pitch');
-subplot 313;
-plot(roll(1:2000));
-ylabel('roll');
+ylim([-4 4]);
+
+ax4 = nexttile;
+plot(roll, '.');
+ylabel('roll')
+ylim([-4 4]);
+
+linkaxes([ax1 ax2 ax3 ax4], 'x');
+
